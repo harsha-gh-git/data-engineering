@@ -58,6 +58,75 @@ Models are the core building blocks of DBT projects and represent transformation
 
 
 
+## Seeds and Sources
+
+### Working with Seeds
+
+Seeds in DBT are CSV files that you can load into your data warehouse. They're useful for static refernce data like country codes, ZIP code mappings or product mappings
+
+
+## Slowly Changing Dimensions
+
+#### Understanding SCD Types
+
+1) Type 0 (No Change): Historical Changes are not tracked
+2) Type 1 (Overwrite): Only the current values are maintained, historical values are overwritten
+3) Type 2 (Add new Row) : Historical changes are tracked by adding new rows with effective dates.
+4) Type 3 (Add new Attribute): Limited Historical values are maintained in additional columns.
+5) Type 4 (History Table): Current values in main table, historical values in separate history table.
+6) Type 6 (Hybrid/Combined Approach): Combines Type 1,2 and 3 
 
 
 
+## Snapshots
+
+#### What are Snapshots?
+
+Snapshots in DBT are built in implementation of Type 2 Slowly Changing Dimensions. They record the state of a mutable table over time by
+- Tracking changes to specified columns
+- Adding effective dates (dbt_valid_from and dbt_valid_to)
+- Maintaining a complete history of changes
+
+
+DBT offers two main strategies for snapshots:
+
+1) Timestamp Strategy
+    This strategy uses a timestamp column to identify changes
+
+
+## Testing
+
+#### Types of Tests
+
+
+DBT supports two main types of tests:
+1) Generic Tests: Reusable tests that can be applied to multiple models
+2) Singular Tests: Custom SQL Queries that test specific conditions.
+
+
+#### Generic Tests
+
+Generic tests are reusable assertions about your models.DBT comes with four built in generic tests:
+1) Unique: Tests that values in a column are unique.
+2) Not Null: Tests that a column contains no null values.
+3) Relationships: Tests referential integrity between tables.
+4) Accepted Values: Tests that values in a column are from a defined set.
+
+
+## Macros
+
+Macros in DBT are reusable pieces of SQL code, similar to functions in other programming languages. They use Jinja, a templating language, to generate SQL dynamically.
+Benefits of macros:
+- Reduce code duplication
+- Encapsulate complex logic
+- Make your code more maintainable
+
+## Analysis
+
+#### Creating Analysis Files
+
+Analysis files in DBT are SQL queries that dont create object in your warehouse.They're useful for:
+- Ad-hoc analysis
+- exploratory data analysis
+- testing complex Queries
+- Generating reports
