@@ -67,3 +67,53 @@ Read -> Filter -> Groupby -> Wide T. -> Show
 
 - Shuffling is the process of redistributing data across partitions and typically involves data exchange between executor nodes
 - Wide transformations require shuffling
+
+
+Points to Remember
+- Shuffling is the process of redistributing data across partitions and typically involves data exchange between executor nodes
+- It requires saving data to the disk, sending it over network and reading data from the disk.
+- Data shuffling can be very expensive.
+- Sometimes it can be mitigated or avoided by even a code changes
+
+
+## Optimization
+
+- Use of parquet or delta, instead of CSVs
+- Avoid expensive operations like sort
+- Minimize volume of data
+- Cache / persist dataframes
+- Repartition / Coalesce
+- Avoid UDFs
+- Partition or index data
+- Bucketing
+- Optimize Cluster
+
+Spark is already doing a lot for us
+- Catalyst Optimizer handles logical and physical query plan optimizations
+- Tungsten provides low level optimizations and code generation techniques to improve overall performance
+- AQE dynamically adjusts query execution based on runtime conditions.
+
+
+
+### Catalyst Optimizer
+
+![Catalyst Optimizer](./images/catalyst-optimizer.excalidraw.png)
+
+
+### Tungsten
+
+- The goal of Porject Tungsten is to improve Spark execution by optimizing Spark Jobs for CPU and memory efficiency
+- Catalyst Optimizer generate optimized execution plan.
+- Tungsten is used to generate optimized code, using whole stage codegen and improve how the data are handled in the cluster
+- Comparing to Catalyst, Tungsten optimizations are way closer to bare metal.
+
+
+### Adaptive Query Execution (AQE)
+
+Adaptive Query execution is query re optimzation that occurs duting query execution.
+- Dynamically changes sort merge join into broadcast hash join
+- Dynamically coalesces partitions
+- Dynamically handles skew
+- Dynamically detects and propagates empty relations
+
+
